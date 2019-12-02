@@ -1,0 +1,27 @@
+extends layoutusers
+
+block content
+  h1= 'Gestion de Semestres'
+  p Desde aqui puedes agregar semestres a la plataforma
+  
+  body
+    div
+      form(action="/users/gest_semestres" method="POST" enctype="multipart/form-data")
+        div
+          label(for="semestre") semestre nuevo:  
+          input(name="semestre" required type="text" placeholder="semestre" id="semestre")
+          br
+          br
+        div
+          input(type="submit" value="ingreso" class="btn btn-info")
+          br
+          br
+    div
+     table
+        tr
+          th= 'PKSEMESTRE' 
+          th= 'SEMESTRE'
+            each val, index in r
+              tr
+                td= val.pksemestre 
+                td= val.semestre
