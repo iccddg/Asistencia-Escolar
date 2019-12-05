@@ -1,0 +1,32 @@
+extends layoutusemestres
+
+block content
+  h1= 'Gestion de Semestres'
+  p Desde aqui puedes agregar o eliminar semestres a la plataforma
+  
+  body
+    div
+      form(action="/users/gest_semestres" method="POST" enctype="multipart/form-data")
+        div
+          label(for="semestre") semestre nuevo:  
+          input(name="semestre" required type="text" placeholder="semestre" id="semestre")
+          br
+          br
+        div
+          input(type="submit" value="ingreso" class="btn btn-primary")
+          br
+          br
+    div(class="table-responsive")
+     table(class="table table-hover table-sm")
+        thead()
+          tr
+            th(class="text-center"  scope="col")= 'SEMESTRE'
+            th(class="text-center"  scope="col")= ''
+        each val in r
+          tbody(class="text-center")  
+            tr
+              th(scope="col")= val.semestre
+                //a(href="/users/gest_semestres" + item.id + "/edit",class="right-space") Editar
+                td
+                  form(action="/users/gest_semestres/"+val.pksemestre+"?_method=delete",method="POST" enctype="multipart/form-data")
+                    input(type="submit", value="Eliminar" class="btn btn-danger")
