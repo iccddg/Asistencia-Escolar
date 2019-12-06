@@ -9,7 +9,6 @@ const lista = () => {
     let string = "SELECT * FROM listarsemestres()"
     let params = [];//1=processed
     query.query(string,params,function (err, result) {
-        console.log(result.rows);
         if(err)
         reject(err.message);
         else{
@@ -48,9 +47,7 @@ const validar_semestre = (p) => {
   return new Promise ((resolve,reject) => {
     let string = "SELECT * FROM public.semestres AS s WHERE s.semestre = $1"
     let params = [p.semestre];//1=processed
-    console.log(params);
     query.query(string,params,function (err, result) {
-      console.log(result.rowCount);
         if(err)
         reject(err.message);
         else{

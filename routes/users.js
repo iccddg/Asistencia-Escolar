@@ -13,7 +13,7 @@ router.get('/gest_semestres', function(req, res, next) {
   semestres.lis_semestres().then(
       resolve => {
         res.status(200);
-        res.render('semestres/gest_semestres', { title: 'Express',r:resolve.r });
+        res.render('semestres/gest_semestres', { title: 'Semestres',r:resolve.r });
   }).catch(err => {
       console.error(err);
       res.status(500).send(err);
@@ -38,10 +38,7 @@ router.param('id', function (req, res, next, id) {
 })
 router.route("/gest_semestres/:id",upload.none())
   .all(function (req, res, next) {
-    // runs for all HTTP verbs first
-    // think of it as route specific middleware!
-    //res.status(200);
-    //res.send('La ruta funciona');
+    
     next()
   }) 
   .delete(function(req,res,){
