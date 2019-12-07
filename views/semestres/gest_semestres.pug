@@ -26,7 +26,8 @@ block content
           tbody(class="text-center")  
             tr
               th(scope="col")= val.semestre
-                //a(href="/users/gest_semestres" + item.id + "/edit",class="right-space") Editar
+                td
+                  a(href="/users/gest_semestres" + val.pksemestre + "/edit",class="right-space") Editar
                 td
                   form(action="/users/gest_semestres/"+val.pksemestre+"?_method=delete",method="POST" enctype="multipart/form-data")
                     input(type="submit", value="Eliminar" class="btn btn-danger")

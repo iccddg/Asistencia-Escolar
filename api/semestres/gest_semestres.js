@@ -21,15 +21,38 @@ const lista = () => {
     });
   })
 }
+exports.semestre = async (p) =>{
+  let r ={}
+  r.r = await sem(p)
+  return r
+}
+const sem = (p) => {
+  return new Promise ((resolve,reject) => {
+    let string = "SELECT * FROM public.semestres AS s WHERE s.pksemestre = $1"
+    let params = [p.pksemestre];//1=processed
+    console.log(p)
+    query.query(string,params,function (err, result) {
+        if(err)
+        reject(err.message);
+        else{
+          if(result.rows[0].pksemestre == null ){
+            reject('La tabla esta bacia')
+          }else{
+            resolve(result.rows);
+          }
+        }
+    });
+  })
+}
 exports.new_semestre = async (p) =>{
   let r = {}
-  r.r = await comprobar_parametros(p)
-  r.r = await validar_semestre(p)
-  r.r = await insertar_semestre(p)
+  r.r = await new_comprobar_parametros(p)
+  r.r = await new_validar_semestre(p)
+  r.r = await new_insertar_semestre(p)
   return r
 }
 
-const comprobar_parametros = (p) => {
+const new_comprobar_parametros = (p) => {
   return new Promise ((resolve,reject) => {
       let params = [
           'semestre'
@@ -43,7 +66,7 @@ const comprobar_parametros = (p) => {
       resolve()
   })
 }
-const validar_semestre = (p) => {
+const new_validar_semestre = (p) => {
   return new Promise ((resolve,reject) => {
     let string = "SELECT * FROM public.semestres AS s WHERE s.semestre = $1"
     let params = [p.semestre];//1=processed
@@ -60,7 +83,7 @@ const validar_semestre = (p) => {
     });
   })
 }
-const insertar_semestre = (p) => {
+const new_insertar_semestre = (p) => {
   return new Promise ((resolve,reject) => {
     let string ='SELECT registrarsemestre($1);'
     let params = [p.semestre];//1=processed
@@ -123,12 +146,10 @@ const borrar_eliminar_semestre = (p) => {
     let string ='DELETE FROM public.semestres AS s WHERE s.pksemestre = ($1);'
     let params = [p.pksemestre];//1=processed
     query.query(string,params,function (err, result) {
-      console.log(result);
-      console.log(result.rowCount);
         if(err)
         reject(err);
         else{
-            resolve('registro exitoso')
+            resolve('Semestre borrado')
         }
     });
   })
