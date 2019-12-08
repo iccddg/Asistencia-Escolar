@@ -1,0 +1,31 @@
+extends ../layout
+
+block content
+  h1= 'Gestion de Grupos'
+  p Desde aqui puedes agregar o eliminar grupos a la plataforma
+  
+  body
+    div
+      form(action="/grupos/gest_grupos" method="POST" enctype="multipart/form-data")
+        div
+          label(for="grupo") grupo nuevo:  
+          input(name="grupo" required type="text" placeholder="grupo" id="grupo")
+          br
+          br
+        div
+          input(type="submit" value="ingreso" class="btn btn-primary")
+          br
+          br
+    div(class="table-responsive")
+     table(class="table table-hover table-sm table-bordered")
+        thead()
+          tr
+            th(class="text-center"  scope="col")= ' GRUPO '
+            th(class="text-center"  scope="col")= ''
+        each val in r
+          tbody(class="text-center")  
+            tr
+              th(scope="col")= val.grupo
+                td
+                  form(action="/grupos/gest_grupos/"+val.pkgrupo+"?_method=delete",method="POST" enctype="multipart/form-data")
+                    input(type="submit", value="Eliminar" class="btn btn-danger")

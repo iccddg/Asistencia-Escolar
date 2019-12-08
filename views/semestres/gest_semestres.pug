@@ -6,7 +6,7 @@ block content
   
   body
     div
-      form(action="/users/gest_semestres" method="POST" enctype="multipart/form-data")
+      form(action="/semestres/gest_semestres" method="POST" enctype="multipart/form-data")
         div
           label(for="semestre") semestre nuevo:  
           input(name="semestre" required type="text" placeholder="semestre" id="semestre")
@@ -17,7 +17,7 @@ block content
           br
           br
     div(class="table-responsive")
-     table(class="table table-hover table-sm")
+     table(class="table table-hover table-sm table-bordered")
         thead()
           tr
             th(class="text-center"  scope="col")= 'SEMESTRE'
@@ -27,7 +27,5 @@ block content
             tr
               th(scope="col")= val.semestre
                 td
-                  a(href="/users/gest_semestres" + val.pksemestre + "/edit",class="right-space") Editar
-                td
-                  form(action="/users/gest_semestres/"+val.pksemestre+"?_method=delete",method="POST" enctype="multipart/form-data")
+                  form(action="/semestres/gest_semestres/"+val.pksemestre+"?_method=delete",method="POST" enctype="multipart/form-data")
                     input(type="submit", value="Eliminar" class="btn btn-danger")

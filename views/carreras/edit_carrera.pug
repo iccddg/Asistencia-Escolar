@@ -1,0 +1,14 @@
+extends ../layout.pug
+block content
+        h2 Editar carrera
+        br
+        form(action="/carreras/gest_carreras/"+r.pkcarrera+"?_method=PUT" method="POST" enctype="multipart/form-data")
+            div
+                label(for="carrera") Carrera:  
+                input(name="carrera" required type="text" id="carrera" value=r.carrera)
+                br
+                br
+            div
+                input(type="submit" value="Guardar cambios" class="btn btn-info")
+                br
+                br

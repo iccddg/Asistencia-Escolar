@@ -6,10 +6,12 @@ var semestres = require('../api/semestres/gest_semestres')
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
+  console.log('Entrada a la ruta /.get')
   res.redirect('/semestres/gest_semestres');
 });
 //Ruta para mostar todos los semestres
 router.get('/gest_semestres', function(req, res, next) {
+  console.log('Entrada a la ruta /gest_semestres.get')
   semestres.lis_semestres().then(
       resolve => {
         res.status(200);
@@ -26,7 +28,7 @@ router.post('/gest_semestres',upload.none(), function(req, res, next) {
   semestres.new_semestre(p).then(
       resolve => {
         res.status(200);
-        res.redirect('/users/gest_semestres')
+        res.redirect('/semestres/gest_semestres')
   }).catch(err => {
       console.error(err);
       res.status(500).send(err);
@@ -58,11 +60,10 @@ router.route("/gest_semestres/:id",upload.none())
   .delete(function(req,res,){
     console.log('Entrada a la ruta: /gest_semestres/:id.delete')
     let p = {pksemestre:res.locals.pksemestre};
-    console.log(p);
     semestres.borrar_semestre(p).then(
         resolve => {
           res.status(200);
-          res.redirect('/users/gest_semestres')
+          res.redirect('/semestres/gest_semestres')
     }).catch(err => {
         console.error(err);
         res.status(500).send(err);
