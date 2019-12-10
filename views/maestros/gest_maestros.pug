@@ -1,0 +1,32 @@
+extends ../layout
+
+block content
+  h1= 'Gestion de Maestros'
+  p Desde aqui puedes agregar o eliminar maestros a la plataforma
+  
+  body
+    div
+      form(action="/maestros/gest_maestros" method="POST" enctype="multipart/form-data")
+        div
+          label(for="nom_maestro") Maestro nuevo:  
+          input(name="nom_maestro" required type="text" placeholder="maestro" id="nom_maestro")
+          br
+          br
+        div
+          input(type="submit" value="ingreso" class="btn btn-primary")
+          br
+          br
+    div(class="table-responsive")
+     table(class="table table-hover table-sm table-bordered")
+        thead()
+          tr
+            th(class="text-center"  scope="col")= ' MAESTRO '
+            th(class="text-center"  scope="col")= ''
+        each val in r
+          tbody(class="text-center")  
+            tr
+              th(scope="col")= val.nom_maestro
+                td
+                  a(href="/maestros/gest_maestros/" + val.pkmaestro + "/edit",class="right-space") Editar
+                  form(action="/maestros/gest_maestros/"+val.pkmaestro+"?_method=delete",method="POST" enctype="multipart/form-data")
+                    input(type="submit", value="Eliminar" class="btn btn-danger")

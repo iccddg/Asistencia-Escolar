@@ -50,7 +50,6 @@ exports.new_grupo = async (p) =>{
   r.r = await new_insertar_grupo(p)
   return r
 }
-
 const new_comprobar_parametros = (p) => {
   return new Promise ((resolve,reject) => {
       let params = [
@@ -102,7 +101,6 @@ exports.borrar_grupo = async (p) =>{
   r.r = await borrar_eliminar_grupo(p)
   return r
 }
-
 const borrar_comprobar_parametros = (p) => {
   return new Promise ((resolve,reject) => {
       let params = [

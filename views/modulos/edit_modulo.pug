@@ -1,0 +1,28 @@
+extends ../layout.pug
+block content
+        h2 Editar alumno
+        br
+        form(action="/modulos/gest_modulos/"+r[0].pkmodulo+"?_method=PUT" method="POST" enctype="multipart/form-data")
+            div
+                label(for="modulo") Modulo:
+                input(name="modulo" required type="text" id="modulo" value=r[0].modulo)
+                br
+                td(style='text-align:right;vertical-align:middle;') semestre:
+                    td
+                        select(name="pksemestre" class="" id="pksemestre")
+                            option(value=r[0].fksemestre, selected='') selecciona el semestre
+                                each val in s
+                                    option(value=val.pksemestre) !{val.semestre}
+                br
+                td(style='text-align:right;vertical-align:middle;') carrera:
+                    td
+                        select(name="pkcarrera" class="" id="pkcarrera")
+                            option(value=r[0].fkcarrera, selected='') Selecciona la carrera
+                                each val in c
+                                    option(value=val.pkcarrera) !{val.carrera}
+                br
+                br
+            div
+                input(type="submit" value="Guardar cambios" class="btn btn-info")
+                br
+                br

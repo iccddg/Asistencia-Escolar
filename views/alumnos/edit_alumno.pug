@@ -1,0 +1,31 @@
+extends ../layout.pug
+block content
+        h2 Editar alumno
+        br
+        form(action="/alumnos/gest_alumnos/"+r[0].pkalumno+"?_method=PUT" method="POST" enctype="multipart/form-data")
+            div
+                label(for="nom_alumno") Numero de control:
+                input(name="n_control" required type="text" id="n_control" value=r[0].n_control)
+                br
+                label(for="nom_alumno") Alumno:
+                input(name="nom_alumno" required type="text" id="nom_alumno" value=r[0].nom_alumno)
+                br
+                td(style='text-align:right;vertical-align:middle;') Semestre:
+                    td
+                        select(name='pksemestre' class='' id="pksemestre")
+                            option(value='-1', selected='') Selecciona el semestre
+                                each val in s
+                                    option(value=val.pksemestre) !{val.semestre}
+                br
+                td(style='text-align:right;vertical-align:middle;') Grupo:
+                    td
+                        select(name="pkgrupo" class="" id="pkgrupo")
+                            option(value='-1', selected='') Selecciona el grupo
+                                each val in g
+                                    option(value=val.pkgrupo) !{val.grupo}
+                br
+                br
+            div
+                input(type="submit" value="Guardar cambios" class="btn btn-info")
+                br
+                br
