@@ -1,0 +1,20 @@
+extends ../layout.pug
+block content
+        h2 Editar lista
+        br
+        form(action="/listas/gest_listas/"+r[0].pklista+"?_method=PUT" method="POST" enctype="multipart/form-data")
+            div
+                label(for="lista") lista:
+                input(name="lista" required type="text" id="lista" value=r[0].lista)
+                br
+                td(style='text-align:right;vertical-align:middle;') Semestre:
+                    td
+                        select(name="pksemestre" class="" id="pksemestre")
+                            option(value=r[0].fksemestre, selected='') selecciona el semestre
+                                each val in s
+                                    option(value=val.pksemestre) !{val.semestre}
+                br
+            div
+                input(type="submit" value="Guardar cambios" class="btn btn-info")
+                br
+                br

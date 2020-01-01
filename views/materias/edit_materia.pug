@@ -1,0 +1,20 @@
+extends ../layout.pug
+block content
+        h2 Editar materia
+        br
+        form(action="/materias/gest_materias/"+r[0].pkmateria+"?_method=PUT" method="POST" enctype="multipart/form-data")
+            div
+                label(for="materia") materia:
+                input(name="materia" required type="text" id="materia" value=r[0].materia)
+                br
+                td(style='text-align:right;vertical-align:middle;') Semestre:
+                    td
+                        select(name="pksemestre" class="" id="pksemestre")
+                            option(value=r[0].fksemestre, selected='') selecciona el semestre
+                                each val in s
+                                    option(value=val.pksemestre) !{val.semestre}
+                br
+            div
+                input(type="submit" value="Guardar cambios" class="btn btn-info")
+                br
+                br

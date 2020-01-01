@@ -6,26 +6,33 @@ html
     link(rel='stylesheet', href='/stylesheets/style.css')
     <div class="container-sm mw-100 bg-info">
       <div class="row mt-n5 mb-2">
-        <div class="col-sm">
-           <a class="nav-link active text-white" href="/semestres/gest_semestres">SEMESTRES</a>
+        <div class="col mt-n5 mb-2">
         </div>
-        <div class="col-sm">
-          <a class="nav-link active text-white" href="/grupos/gest_grupos">GRUPOS</a>
+        <div class="col mt-n5 mb-2">
         </div>
-        <div class="col-sm">
-          <a class="nav-link active text-white" href="/carreras/gest_carreras">CARRERAS</a>
+        <div class="dropdown">
+          <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+            Dropdown ASISTENCIAS
+          </button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="/listas/gest_listas">MIS LISTAS</a>
+            <a class="dropdown-item" href="/listas/consulta/">ASISTENCIAS</a>
+          </div>
         </div>
-        <div class="col-sm">
-          <a class="nav-link active text-white" href="/maestros/gest_maestros">MAESTROS</a>
-        </div>
-        <div class="col-sm">
-          <a class="nav-link active text-white" href="/alumnos/gest_alumnos">ALUMNOS</a>
-        </div>
-        <div class="col-sm">
-          <a class="nav-link active text-white" href="/modulos/gest_modulos">MODULOS</a>
-        </div>
-        <div class="col-sm">
-          <a class="nav-link active text-white" href="/submodulos/gest_submodulos">SUBMODULOS</a>
+        <div class="dropdown">
+          <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+            Dropdown CONFIGURACION
+          </button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="/semestres/gest_semestres">SEMESTRES</a>
+            <a class="dropdown-item" href="/grupos/gest_grupos">GRUPOS</a>
+            <a class="dropdown-item" href="/carreras/gest_carreras">CARRERAS</a>
+            <a class="dropdown-item" href="/maestros/gest_maestros">MAESTROS</a>
+            <a class="dropdown-item" href="/alumnos/gest_alumnos">ALUMNOS</a>
+            <a class="dropdown-item" href="/modulos/gest_modulos">MODULOS</a>
+            <a class="dropdown-item" href="/submodulos/gest_submodulos">SUBMODULOS</a>
+            <a class="dropdown-item" href="/materias/gest_materias">MATERIAS</a>
+          </div>
         </div>
       </div>
     </div>

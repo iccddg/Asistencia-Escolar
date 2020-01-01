@@ -34,7 +34,7 @@ const sem = (p) => {
         if(err)
         reject(err.message);
         else{
-          if(result.rows[0].pksemestre == null ){
+          if(result.rows.length < 1 ){
             reject('La tabla esta bacia')
           }else{
             resolve(result.rows);

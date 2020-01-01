@@ -1,0 +1,31 @@
+extends ../layout
+
+block content
+  h1= 'Gestion de listas'
+  p Desde aqui puedes seleccionar tus listas o crear una lista nueva
+  
+  body
+    div
+      form(action="/listas/crear_lista" enctype="multipart/form-data")
+        input(type="submit" value="Crear lista" class="btn btn-primary")
+        br
+        br
+    div(class="table-responsive")
+     table(class="table table-hover table-sm table-bordered")
+        thead()
+          tr
+            th(class="text-center"  scope="col")= 'LISTA'
+            th(class="text-center"  scope="col")= ''
+        each val in r
+          tbody(class="text-center")  
+            tr
+              th(scope="col")= val.nombre
+                td
+                  a(href="/listas/registro/"+ val.pklista,class="btn btn-primary") Registrar asistencia
+                  br
+                  a(href="/listas/consulta/",class="btn btn-success") consultar asistencia
+                  br
+                  a(href="/listas/gest_listas/" + val.pklista + "/edit",class="btn btn-link") Editar
+                  br
+                  form(action="/listas/gest_listas/"+val.pklista+"?_method=delete",method="POST" enctype="multipart/form-data")
+                    input(type="submit", value="Eliminar" class="btn btn-danger")

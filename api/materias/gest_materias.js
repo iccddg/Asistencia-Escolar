@@ -1,13 +1,13 @@
 const query = require('../db_conexion');
-//devuelbe todos los alumnos de la tabla alumnos
-exports.lis_alumnos = async () =>{
+
+exports.lis_materias = async () =>{
   let r = {}
   r.r = await lista()
   return r
 }
 const lista = () => {
   return new Promise ((resolve,reject) => {
-    let string = "SELECT r.pkalumno,r.nom_alumno,r.fksemestre,r.fkgrupo, r.n_control, r.grupo, s.semestre FROM (SELECT a.pkalumno,a.nom_alumno,a.fksemestre,a.fkgrupo, a.n_control, g.grupo FROM public.alumnos AS a LEFT JOIN public.grupos AS g ON (a.fkgrupo = g.pkgrupo) ) AS r LEFT JOIN public.semestres AS s ON (r.fksemestre = s.pksemestre) ORDER BY s.semestre, r.grupo, r.nom_alumno"
+    let string = "SELECT ma.pkmateria,ma.materia,ma.fksemestre,s.semestre FROM public.materias AS ma LEFT JOIN public.semestres AS s ON (ma.fksemestre = s.pksemestre) ORDER BY ma.materia"
     let params = [];//1=processed
     query.query(string,params,function (err, result) {
         if(err)
@@ -22,22 +22,22 @@ const lista = () => {
     });
   })
 }
-// busca una alumno por pkalumno y lo devuelve
-exports.alumno = async (p) =>{
+// busca una materia por pkmateria y la devuelve
+exports.materia = async (p) =>{
   let r ={}
-  r.r = await alum(p)
+  r.r = await mat(p)
   return r
 }
-const alum = (p) => {
+const mat = (p) => {
   return new Promise ((resolve,reject) => {
-    let string = "SELECT * FROM public.alumnos AS s WHERE s.pkalumno = $1"
-    let params = [p.pkalumno];//1=processed
+    let string = "SELECT * FROM public.materias AS s WHERE s.pkmateria = $1"
+    let params = [p.pkmateria];//1=processed
     query.query(string,params,function (err, result) {
         if(err)
         reject(err.message);
         else{
           if(result.rows.length < 1 ){
-            reject('La tabla esta bacia')
+            reject('La materia no existe')
           }else{
             resolve(result.rows);
           }
@@ -45,21 +45,19 @@ const alum = (p) => {
     });
   })
 }
-exports.new_alumno = async (p) =>{
+exports.new_materia = async (p) =>{
   let r = {}
   r.r = await new_comprobar_parametros(p)
-  r.r = await new_validar_alumno(p)
-  r.r = await new_insertar_alumno(p)
+  r.r = await new_validar_materia(p)
+  r.r = await new_insertar_materia(p)
   return r
 }
-// crea un alumno nuevo
+
 const new_comprobar_parametros = (p) => {
   return new Promise ((resolve,reject) => {
       let params = [
-          'nom_alumno',
-          'n_control',
-          'fksemestre',
-          'fkgrupo'
+          'materia',
+          'fksemestre'
       ]
       for(var i = 0;i<params.length;i++){
           if(p[params[i]] == '' || p[params[i]] == null || p[params[i]] == undefined){
@@ -70,10 +68,10 @@ const new_comprobar_parametros = (p) => {
       resolve()
   })
 }
-const new_validar_alumno = (p) => {
+const new_validar_materia = (p) => {
   return new Promise ((resolve,reject) => {
-    let string = "SELECT * FROM public.alumnos AS s WHERE s.nom_alumno = $1 OR s.n_control = $2"
-    let params = [p.nom_alumno,p.n_control];//1=processed
+    let string = "SELECT * FROM public.materias AS s WHERE s.materia = $1"
+    let params = [p.materia];//1=processed
     query.query(string,params,function (err, result) {
         if(err)
         reject(err.message);
@@ -81,16 +79,16 @@ const new_validar_alumno = (p) => {
           if(result.rows.length < 1){
             resolve();
           }else{
-            reject('El alumno o el numero de control ya existe');
+            reject('La materia ya existe');
           }
         }
     });
   })
 }
-const new_insertar_alumno = (p) => {
+const new_insertar_materia = (p) => {
   return new Promise ((resolve,reject) => {
-    let string ='INSERT INTO public.alumnos (nom_alumno,n_control,fksemestre,fkgrupo) VALUES ($1,$2,$3,$4)'
-    let params = [p.nom_alumno,p.n_control,p.fksemestre,p.fkgrupo];//1=processed
+    let string ='INSERT INTO public.materias (materia,fksemestre) VALUES ($1,$2)'
+    let params = [p.materia,p.fksemestre];//1=processed
     query.query(string,params,function (err, result) {
         if(err)
         reject(err);
@@ -100,22 +98,20 @@ const new_insertar_alumno = (p) => {
     });
   })
 }
-exports.editar_alumno = async (p) =>{
+exports.editar_materia = async (p) =>{
   let r = {}
   r.r = await editar_comprobar_parametros(p)
-  r.r = await editar_validar_alumno(p)
-  r.r = await editar_alumno(p)
+  r.r = await editar_validar_materia(p)
+  r.r = await editar_materia(p)
   return r
 }
-// Edita los datos de un alumno
+
 const editar_comprobar_parametros = (p) => {
   return new Promise ((resolve,reject) => {
       let params = [
-          'pkalumno',
-          'nom_alumno',
-          'n_control',
-          'fksemestre',
-          'fkgrupo'
+          'pkmateria',
+          'materia',
+          'fksemestre'
       ]
       for(var i = 0;i<params.length;i++){
           if(p[params[i]] == '' || p[params[i]] == null || p[params[i]] == undefined){
@@ -126,16 +122,16 @@ const editar_comprobar_parametros = (p) => {
       resolve()
   })
 }
-const editar_validar_alumno = (p) => {
+const editar_validar_materia = (p) => {
   return new Promise ((resolve,reject) => {
-    let string = "SELECT * FROM public.alumnos AS s WHERE s.pkalumno = $1"
-    let params = [p.pkalumno];//1=processed
+    let string = "SELECT * FROM public.materias AS m WHERE m.pkmateria = $1"
+    let params = [p.pkmateria];//1=processed
     query.query(string,params,function (err, result) {
         if(err)
         reject(err.message);
         else{
           if(result.rowCount == 0){
-            reject('El alumno no existe');
+            reject('La materia no existe');
           }else{
             resolve();
           }
@@ -143,31 +139,31 @@ const editar_validar_alumno = (p) => {
     });
   })
 }
-const editar_alumno = (p) => {
+const editar_materia = (p) => {
   return new Promise ((resolve,reject) => {
-    let string ='UPDATE public.alumnos SET pkalumno=$1, nom_alumno=$2,n_control=$3,fksemestre=$4,fkgrupo=$5 WHERE pkalumno = ($1);'
-    let params = [p.pkalumno,p.nom_alumno,p.n_control,p.fksemestre,p.fkgrupo];//1=processed
+    let string ='UPDATE public.materias SET materia=$2,fksemestre=$3 WHERE pkmateria = ($1);'
+    let params = [p.pkmateria,p.materia,p.fksemestre];//1=processed
     query.query(string,params,function (err, result) {
         if(err)
         reject(err);
         else{
-            resolve('alumno actualizada')
+            resolve('materia actualizado')
         }
     });
   })
 }
-exports.borrar_alumno = async (p) =>{
+exports.borrar_materia = async (p) =>{
   let r = {}
   r.r = await borrar_comprobar_parametros(p)
-  r.r = await borrar_validar_alumno(p)
-  r.r = await borrar_eliminar_alumno(p)
+  r.r = await borrar_validar_materia(p)
+  r.r = await borrar_eliminar_materia(p)
   return r
 }
-//Borra un alumno
+
 const borrar_comprobar_parametros = (p) => {
   return new Promise ((resolve,reject) => {
       let params = [
-          'pkalumno'
+          'pkmateria'
       ]
       for(var i = 0;i<params.length;i++){
           if(p[params[i]] == '' || p[params[i]] == null || p[params[i]] == undefined){
@@ -178,16 +174,16 @@ const borrar_comprobar_parametros = (p) => {
       resolve()
   })
 }
-const borrar_validar_alumno = (p) => {
+const borrar_validar_materia = (p) => {
   return new Promise ((resolve,reject) => {
-    let string = "SELECT * FROM public.alumnos AS s WHERE s.pkalumno = $1"
-    let params = [p.pkalumno];//1=processed
+    let string = "SELECT * FROM public.materias AS s WHERE s.pkmateria = $1"
+    let params = [p.pkmateria];//1=processed
     query.query(string,params,function (err, result) {
         if(err)
         reject(err.message);
         else{
           if(result.rowCount == 0){
-            reject('EL alumno no existe');
+            reject('La materia no existe');
           }else{
             resolve();
           }
@@ -195,15 +191,15 @@ const borrar_validar_alumno = (p) => {
     });
   })
 }
-const borrar_eliminar_alumno = (p) => {
+const borrar_eliminar_materia = (p) => {
   return new Promise ((resolve,reject) => {
-    let string ='DELETE FROM public.alumnos AS s WHERE s.pkalumno = ($1);'
-    let params = [p.pkalumno];//1=processed
+    let string ='DELETE FROM public.materias AS s WHERE s.pkmateria = ($1);'
+    let params = [p.pkmateria];//1=processed
     query.query(string,params,function (err, result) {
         if(err)
         reject(err);
         else{
-            resolve('alumno borrado')
+            resolve('materia borrada')
         }
     });
   })

@@ -13,14 +13,14 @@ block content
                 td(style='text-align:right;vertical-align:middle;') Semestre:
                     td
                         select(name='pksemestre' class='' id="pksemestre")
-                            option(value='-1', selected='') Selecciona el semestre
+                            option(value=r[0].fksemestre, selected='') Selecciona el semestre
                                 each val in s
                                     option(value=val.pksemestre) !{val.semestre}
                 br
                 td(style='text-align:right;vertical-align:middle;') Grupo:
                     td
                         select(name="pkgrupo" class="" id="pkgrupo")
-                            option(value='-1', selected='') Selecciona el grupo
+                            option(value=r[0].fkgrupo, selected='') Selecciona el grupo
                                 each val in g
                                     option(value=val.pkgrupo) !{val.grupo}
                 br

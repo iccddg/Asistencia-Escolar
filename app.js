@@ -16,6 +16,8 @@ var maestrosRouter = require('./routes/maestros');
 var alumnosRouter = require('./routes/alumnos');
 var modulosRouter = require('./routes/modulos');
 var submodulosRouter = require('./routes/submodulos');
+var materiasRouter = require('./routes/materias');
+var listasRouter = require('./routes/listas');
 var app = express();
 
 // view engine setup
@@ -39,6 +41,8 @@ app.use('/maestros', maestrosRouter);
 app.use('/alumnos', alumnosRouter);
 app.use('/modulos', modulosRouter);
 app.use('/submodulos', submodulosRouter);
+app.use('/materias', materiasRouter);
+app.use('/listas', listasRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
