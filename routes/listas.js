@@ -58,7 +58,9 @@ router.get('/registro/:id', async (req, res, next) => {
   materia = mat.r[0].materia;
   maestro = ma.r[0].nom_maestro;
   p={semestre:semestre,grupo:grupo,materia:materia,maestro:maestro}
-  let reg = await Promise.resolve(listas.registroa(p))
+  let reg = await Promise.resolve(listas.registroa(p)).catch(err => {
+    res.status(500).send(err);
+  })
   res.locals.r = reg.r;
   res.status(200);
   res.render('listas/registro_asistencia', { title: 'Registro de asistencia',r:res.locals.r,l:res.locals.lis});
@@ -78,16 +80,6 @@ router.get('/consulta/', async (req, res, next) => {
 //Ruta para consultar asistencias con filtro
 router.get('/consulta/filtro/', async (req, res, next) => {
   console.log('Entrada a la ruta /consulta/id.get')
-  /*let sem = await Promise.resolve(semestres.semestre(p))  
-  let grp = await Promise.resolve(grupos.grupo(p))
-  let mat = await Promise.resolve(materias.materia(p))
-  let ma = await Promise.resolve(maestros.maestro(p))
-  semestre = sem.r[0].semestre;
-  grupo = grp.r[0].grupo;
-  materia = mat.r[0].materia;
-  maestro = ma.r[0].nom_maestro;
-  p={semestre:semestre,grupo:grupo,materia:materia,maestro:maestro}
-  */
   let reg = await Promise.resolve(listas.asistencias( ))
   res.locals.r = reg.r;
   console.log(res.locals.r);

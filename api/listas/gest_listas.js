@@ -237,7 +237,7 @@ const registro = (p) => {
         reject(err.message);
         else{
           if(result.rows.length < 1 ){
-            reject('La lista para registro no existe')
+            reject('La lista para registro esta vacia')
           }else{
             resolve(result.rows);
           }

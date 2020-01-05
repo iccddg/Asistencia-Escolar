@@ -1,42 +1,61 @@
 doctype html
-html
+<html lang="es">
   head
-    title= title
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     link(rel='stylesheet', href='/stylesheets/style.css')
-    <div class="container-sm mw-100 bg-info">
-      <div class="row mt-n5 mb-2">
-        <div class="col mt-n5 mb-2">
-        </div>
-        <div class="col mt-n5 mb-2">
-        </div>
-        <div class="dropdown">
-          <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-            Dropdown ASISTENCIAS
+    link(rel='stylesheet', href='/stylesheets/responsive.css')
+    
+    
+    title= title
+  body(id="home-pg")
+    section(class="sticky-top")  
+      div(class="container main-container mw-100 mx-0 px-0 px-0 pb-1")
+        <nav class="navbar navbar-expand-lg navbar-light" id="default-navbar">
+          <a class="navbar-brand" href="/">CBTa 195</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-opts" aria-controls="navbar-opts" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
           </button>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="/listas/gest_listas">MIS LISTAS</a>
-            <a class="dropdown-item" href="/listas/consulta/">ASISTENCIAS</a>
+          <div class="collapse navbar-collapse" id="navbar-opts">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item active">
+                <a class="nav-link" href="/">Inicio <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <div class="dropdown">
+                  <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+                  Dropdown Asistencias
+                  </button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="/listas/gest_listas">Mis listas</a>
+                    <a class="dropdown-item" href="/listas/consulta/">Asistencias</a>
+                  </div>
+                </div>
+              </li>
+              <li class="nav-item">
+                <div class="dropdown">
+                  <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+                  Dropdown Configuración
+                  </button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="/semestres/gest_semestres">Semestres</a>
+                    <a class="dropdown-item" href="/grupos/gest_grupos">Grupos</a>
+                    <a class="dropdown-item" href="/carreras/gest_carreras">Carreras</a>
+                    <a class="dropdown-item" href="/maestros/gest_maestros">Maestros</a>
+                    <a class="dropdown-item" href="/alumnos/gest_alumnos">Alumnos</a>
+                    <a class="dropdown-item" href="/modulos/gest_modulos">Modulos</a>
+                    <a class="dropdown-item" href="/submodulos/gest_submodulos">Submodulos</a>
+                    <a class="dropdown-item" href="/materias/gest_materias">Materias</a>
+                  </div>
+                </div>
+              </li>
+            </ul>
           </div>
-        </div>
-        <div class="dropdown">
-          <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-            Dropdown CONFIGURACION
-          </button>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="/semestres/gest_semestres">SEMESTRES</a>
-            <a class="dropdown-item" href="/grupos/gest_grupos">GRUPOS</a>
-            <a class="dropdown-item" href="/carreras/gest_carreras">CARRERAS</a>
-            <a class="dropdown-item" href="/maestros/gest_maestros">MAESTROS</a>
-            <a class="dropdown-item" href="/alumnos/gest_alumnos">ALUMNOS</a>
-            <a class="dropdown-item" href="/modulos/gest_modulos">MODULOS</a>
-            <a class="dropdown-item" href="/submodulos/gest_submodulos">SUBMODULOS</a>
-            <a class="dropdown-item" href="/materias/gest_materias">MATERIAS</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  body
+        </nav>
+
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>

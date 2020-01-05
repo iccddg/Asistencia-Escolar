@@ -1,8 +1,16 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+:root{
+  --bkg-color-dgta:rgb(51, 109, 46);
+  --orange-lighter:rgb(255, 186, 82);
+  --bkg-beige:rgb(238, 188, 95);
 }
-
-a {
-  color: #00B7FF;
+#home-pg{
+  background-color: rgb(177, 194, 176);
+}
+#default-navbar{
+  background-color: var(--bkg-color-dgta);
+}
+#default-navbar .nav-link,
+#default-navbar .navbar-brand,
+#default-navbar .dropdown-toggle{
+  color: rgb(255, 255, 0);
 }
