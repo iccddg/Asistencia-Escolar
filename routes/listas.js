@@ -90,6 +90,7 @@ router.get('/consulta/filtro/', async (req, res, next) => {
 router.post('/registroa',upload.none(), async (req, res, next) => {
   console.log('Entrada a la ruta /gest_listas.post')
   let f = req.body;
+  console.log(f);
   let registros=(Object.keys(f).length - 6)/3;
   let registronuevo = 0;
   for(x=0;x<registros;x++){
