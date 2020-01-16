@@ -1,0 +1,54 @@
+extends ../layout
+
+block content
+  h1= 'Gestion de alumnos'
+  p Desde aqui puedes agregar o eliminar alumnos a la plataforma
+  
+  body
+    div
+      form(action="/alumnos/gest_alumnos" method="POST" enctype="multipart/form-data")
+        div
+          label(for="nom_alumno") alumno nuevo:  
+          input(name="nom_alumno" required type="text" placeholder="alumno" id="nom_alumno")
+          br
+          label(for="n_control") numero de control:  
+          input(name="n_control" required type="text" placeholder="numero" id="n_control")
+          br
+          td(style='text-align:right;vertical-align:middle;') Semestre:
+            td
+              select(name='pksemestre' class='' id="pksemestre")
+                option(value='-1', selected='') Selecciona el semestre
+                  each val in s
+                      option(value=val.pksemestre) !{val.semestre}
+          br
+          td(style='text-align:right;vertical-align:middle;') Grupo:
+            td
+              select(name="pkgrupo" class="" id="pkgrupo")
+                option(value='-1', selected='') Selecciona el grupo
+                  each val in g
+                      option(value=val.pkgrupo) !{val.grupo}
+          br
+        div
+          input(type="submit" value="ingreso" class="btn btn-primary")
+          br
+          br
+    div(class="table-responsive")
+     table(class="table table-hover table-sm table-bordered")
+        thead()
+          tr
+            th(class="text-center"  scope="col")= 'NUMERO DE CONTROL'
+            th(class="text-center"  scope="col")= 'ALUMNO'
+            th(class="text-center"  scope="col")= 'SEMESTRE'
+            th(class="text-center"  scope="col")= 'GRUPO'
+            th(class="text-center"  scope="col")= ''
+        each val in r
+          tbody(class="text-center")  
+            tr
+              th(scope="col")= val.n_control
+              th(scope="col")= val.nom_alumno
+              th(scope="col")= val.semestre
+              th(scope="col")= val.grupo
+                td
+                  a(href="/alumnos/gest_alumnos/" + val.pkalumno + "/edit",class="right-space") Editar
+                  form(action="/alumnos/gest_alumnos/"+val.pkalumno+"?_method=delete",method="POST" enctype="multipart/form-data")
+                    input(type="submit", value="Eliminar" class="btn btn-danger")

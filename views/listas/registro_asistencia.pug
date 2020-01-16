@@ -1,0 +1,55 @@
+extends ../layout.pug
+block content
+        h2 Registro de asistencia
+        br
+        div(class="table-responsive")
+            table(class="table table-sm" border = 0)
+                tr
+                    td(class="text-right") Lista 
+                    td !{l.nombre}
+                    td
+                    td 
+                tr
+                    td(class="text-right") Semestre:  
+                    td !{r[0].semestre}
+                    td(class="text-right") Materia:  
+                    td !{r[0].materia}
+                tr
+                    td(class="text-right") Grupo:  
+                    td !{r[0].grupo}
+                    td(class="text-right") Docente:  
+                    td !{r[0].nom_maestro}
+        form(action="/listas/registroa/" method="POST" enctype="multipart/form-data")
+            div(class="form-inline")
+                <div class="row">
+                    label(for="fecha" class="col-sm-2 col-form-label") Fecha:
+                    input(name="fecha" class=" " required type="date" id="fecha")
+                    label(for="sesion" class="col-sm-2 col-form-label") Sesion:
+                    input(name="sesion" required type="number" id="sesion")
+                    input(name="fkmaestro" required type="hidden" id="fkmaestro" value=l.fkmaestro)
+                    input(name="fkmateria" required type="hidden" id="fkmateria" value=l.fkmateria)
+                    input(name="fksemestre" required type="hidden" id="fksemestre" value=l.fksemestre)
+                    input(name="fkgrupo" required type="hidden" id="fkgrupo" value=l.fkgrupo)
+                </div>
+            </div>
+            br
+            div(class="table-responsive")
+                table(class="table table-hover table-sm table-bordered")
+                    tr
+                        th(class="text-center"  scope="col")= 'N.CONTRL'
+                        th(class="text-center"  scope="col")= 'ALUMNO'
+                        th(class="text-center"  scope="col")= 'ESTADO'
+                    each val,index in r
+                        tbody(class="text-center")
+                            th
+                                <input type="text" class="form-control-plaintext text-center" name="n_control!{index}"  value=!{val.n_control} readonly>
+                                <input type="hidden" class="form-control-plaintext text-center" name="pkalumno!{index}"  value=!{val.pkalumno} readonly>     
+                            td= val.nom_alumno
+                            td(class="text-left")
+                                <input type="radio" name="estado!{index}" required value="a"> Asistencia<br>
+                                <input type="radio" name="estado!{index}" required value="r"> Retardo<br>
+                                <input type="radio" name="estado!{index}" required value="f"> Falta<br>
+            div
+                input(type="submit" value="Guardar lista" class="btn btn-info")
+                br
+                br

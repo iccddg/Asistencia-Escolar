@@ -1,0 +1,14 @@
+extends ../layout.pug
+block content
+        h2 Editar maestro
+        br
+        form(action="/maestros/gest_maestros/"+r.pkmaestro+"?_method=PUT" method="POST" enctype="multipart/form-data")
+            div
+                label(for="nom_maestro") Maestro:  
+                input(name="nom_maestro" required type="text" id="nom_maestro" value=r.nom_maestro)
+                br
+                br
+            div
+                input(type="submit" value="Guardar cambios" class="btn btn-info")
+                br
+                br

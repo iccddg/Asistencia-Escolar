@@ -1,0 +1,32 @@
+extends ../layout
+
+block content
+  h1= 'Gestion de Carreras'
+  p Desde aqui puedes agregar o eliminar carreras a la plataforma
+  
+  body
+    div
+      form(action="/carreras/gest_carreras" method="POST" enctype="multipart/form-data")
+        div
+          label(for="carrera") carrera nueva:  
+          input(name="carrera" required type="text" placeholder="carrera" id="carrera")
+          br
+          br
+        div
+          input(type="submit" value="ingreso" class="btn btn-primary")
+          br
+          br
+    div(class="table-responsive")
+     table(class="table table-hover table-sm table-bordered")
+        thead()
+          tr
+            th(class="text-center"  scope="col")= ' CARRERA '
+            th(class="text-center"  scope="col")= ''
+        each val in r
+          tbody(class="text-center")  
+            tr
+              th(scope="col")= val.carrera
+                td
+                  a(href="/carreras/gest_carreras/" + val.pkcarrera + "/edit",class="right-space") Editar
+                  form(action="/carreras/gest_carreras/"+val.pkcarrera+"?_method=delete",method="POST" enctype="multipart/form-data")
+                    input(type="submit", value="Eliminar" class="btn btn-danger")

@@ -1,0 +1,40 @@
+extends ../layout
+
+block content
+  h1= 'Gestion de submodulos'
+  p Desde aqui puedes agregar o eliminar submodulos a la plataforma
+  
+  body
+    div
+      form(action="/submodulos/gest_submodulos" method="POST" enctype="multipart/form-data")
+        div
+          label(for="submodulo") Submodulo nuevo:  
+          input(name="submodulo" required type="text" placeholder="submodulo" id="submodulo")
+          br
+          td(style='text-align:right;vertical-align:middle;') Modulo:
+            td
+              select(name='pkmodulo' class='' id="pkmodulo")
+                option(value='-1', selected='') Selecciona el modulo
+                  each val in m
+                      option(value=val.pkmodulo) !{val.modulo}
+          br
+        div
+          input(type="submit" value="ingreso" class="btn btn-primary")
+          br
+          br
+    div(class="table-responsive")
+     table(class="table table-hover table-sm table-bordered")
+        thead()
+          tr
+            th(class="text-center"  scope="col")= 'SUBMODULO'
+            th(class="text-center"  scope="col")= 'MODULO'
+            th(class="text-center"  scope="col")= ''
+        each val in r
+          tbody(class="text-center")  
+            tr
+              th(scope="col")= val.submodulo
+              th(scope="col")= val.modulo
+                td
+                  a(href="/submodulos/gest_submodulos/" + val.pksubmodulo + "/edit",class="right-space") Editar
+                  form(action="/submodulos/gest_submodulos/"+val.pksubmodulo+"?_method=delete",method="POST" enctype="multipart/form-data")
+                    input(type="submit", value="Eliminar" class="btn btn-danger")

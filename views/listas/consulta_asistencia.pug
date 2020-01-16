@@ -1,0 +1,63 @@
+extends ../layout.pug
+block content
+        h2 Asistencias
+        br
+        div(class="table-responsive")
+            table(class="table table-sm" border = 0)
+                tr
+                    
+                tr
+                    
+                tr
+
+        form(action="/listas/consulta/filtro" method="POST" enctype="multipart/form-data")
+            <div class="form-group row">
+                div(class="form-inline")
+                    label(for="fecha" class="col-sm-15 col-form-label") Fecha:
+                    div(class="col-sm")
+                        input(name="fecha" class="form-control" required type="date" id="fecha")
+                    label(for="sesion" class="col-sm-15 col-form-label") Sesion:
+                    div(class="col-sm")
+                        input(name="sesion" class="form-control" required type="number" id="sesion")
+                    label(for="pksemestre" class="col-sm-15 col-form-label") Semestre:
+                    div(class="col-sm")
+                        select(name="pksemestre" class="" id="pksemestre")
+                            option(value='-1', selected='') Selecciona el semestre
+                                each val in s
+                                    option(value=val.pksemestre) !{val.semestre}
+                    label(for="pkgrupo" class="col-sm-15 col-form-label") Grupo:
+                    div(class="col-sm")
+                        select(name="pkgrupo" class="" id="pkgrupo")
+                            option(value='-1', selected='') Selecciona el grupo
+                                each val in g
+                                    option(value=val.pkgrupo) !{val.grupo}
+                    div(class="col-sm")
+                        input(type="submit" value="filtrar " class="form-control btn btn-info")
+                </div>
+            br
+            div(class="table-responsive")
+                table(class="table table-hover table-sm table-bordered" id="tblAsistencias")
+                    tr
+                        th(class="text-center col-1"  scope="col")= 'FECHA'
+                        th(class="text-center"  scope="col")= 'NUMERO DE CONTROL'
+                        th(class="text-center"  scope="col")= 'ALUMNO'
+                        th(class="text-center"  scope="col")= 'SESION'
+                        th(class="text-center"  scope="col")= 'ESTADO'
+                        th(class="text-center"  scope="col")= 'SEMESTRE'
+                        th(class="text-center"  scope="col")= 'GRUPO'
+                        th(class="text-center"  scope="col")= 'MATERIA'
+                        th(class="text-center"  scope="col")= 'DOCENTE'
+                    each val,index in r
+                        tbody(class="text-center")
+                            td()= val.fecha
+                            td= val.n_control
+                            td= val.nom_alumno
+                            td= val.sesion
+                            td= val.estado
+                            td= val.semestre
+                            td= val.grupo
+                            td= val.materia
+                            td= val.nom_maestro
+            div
+                br
+                br

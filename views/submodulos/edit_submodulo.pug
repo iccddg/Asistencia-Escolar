@@ -1,0 +1,20 @@
+extends ../layout.pug
+block content
+        h2 Editar submodulo
+        br
+        form(action="/submodulos/gest_submodulos/"+r[0].pksubmodulo+"?_method=PUT" method="POST" enctype="multipart/form-data")
+            div
+                label(for="submodulo") submodulo:
+                input(name="submodulo" required type="text" id="submodulo" value=r[0].submodulo)
+                br
+                td(style='text-align:right;vertical-align:middle;') Modulo:
+                    td
+                        select(name="pkmodulo" class="" id="pkmodulo")
+                            option(value=r[0].fkmodulo, selected='') selecciona el modulo
+                                each val in m
+                                    option(value=val.pkmodulo) !{val.modulo}
+                br
+            div
+                input(type="submit" value="Guardar cambios" class="btn btn-info")
+                br
+                br
