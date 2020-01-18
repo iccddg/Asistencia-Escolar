@@ -1,10 +1,10 @@
 const pgsql = require("pg");
 
 const pool = new pgsql.Pool({
-user: 'postgres',
-host: 'localhost',
-database: 'postgres',
-password: '12345',
+user: 'noabandono',
+host: '192.168.1.65',
+database: 'asistenciaescolar',
+password: 'abandonoescolar',
 port: 5432,
 });
 
