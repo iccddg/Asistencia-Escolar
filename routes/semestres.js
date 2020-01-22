@@ -9,6 +9,8 @@ router.get('/', function(req, res, next) {
   console.log('Entrada a la ruta /.get')
   res.redirect('/semestres/gest_semestres');
 });
+
+
 //Ruta para mostar todos los semestres
 router.get('/gest_semestres', function(req, res, next) {
   console.log('Entrada a la ruta /gest_semestres.get')
@@ -21,6 +23,8 @@ router.get('/gest_semestres', function(req, res, next) {
       res.status(500).send(err);
   })
 });
+
+
 //Ruta para agregar semestre nuevo
 router.post('/gest_semestres',upload.none(), function(req, res, next) {
   console.log('Entrada a la ruta /gest_semestres.post')
@@ -34,28 +38,29 @@ router.post('/gest_semestres',upload.none(), function(req, res, next) {
       res.status(500).send(err);
   })
 });
+
+
 //middleware para todas las direcciones con id, actualmente sin uso
-router.param('id', async (req, res,next) => {
-    console.log('Entrada a la ruta: /gest_semestres/:id.param')
-    try {
-      next()
-    }  catch (err) {
-    // handle errors here
-    }
+router.param('id', function(req, res, next) {
+  console.log('Entrada a la ruta: /gest_semestres/:id.param')
+  next();
 })
+
+
 //rutas para el manejo de semestres individuales
 router.route("/gest_semestres/:id",upload.none())
-  .all(async (req, res,next) => {
+  .all(function(req,res,next){
     console.log('Entrada a la ruta: /gest_semestres/:id.all')
-    try {
-      let p = {pksemestre:req.params.id};
-      const flags= await Promise.resolve(semestres.semestre(p));
-      res.locals.pksemestre = flags.r[0].pksemestre;
-      res.locals.semestre = flags.r[0].semestre;
+    let p = {pksemestre:req.params.id};
+    semestres.semestre(p).then(
+      resolve => {
+      res.locals.pksemestre = resolve.r[0].pksemestre;
+      res.locals.semestre = resolve.r[0].semestre;
       next();
-    }  catch (err) {
-    // handle errors here
-    }
+    }).catch(err => {
+      console.error(err);
+      res.status(500).send(err);
+    })
   })
   .delete(function(req,res,){
     console.log('Entrada a la ruta: /gest_semestres/:id.delete')
