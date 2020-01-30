@@ -34,7 +34,7 @@ exports.semestre = async (p) =>{
 }
 const sem = (p) => {
   return new Promise ((resolve,reject) => {
-    let string = "select * from listarsemestres($1)"
+    let string = "select * from mostrar_semestre($1)"
     let params = [p.pksemestre];//1=processed
     query.query(string,params,function (err, result) {
         if(err)
