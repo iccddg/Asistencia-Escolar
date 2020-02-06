@@ -1,4 +1,7 @@
 const query = require('../db_conexion');
+
+/* debuelbe los semestres registrados en la tabla semestres
+con una funcion de tipo SETOF*/
 exports.lis_semestres = async () =>{
   let r = {}
   r.r = await lista()
@@ -21,6 +24,9 @@ const lista = () => {
     });
   })
 }
+
+/*Devuelve el semestre que coincide con la clave primaria recibida en 
+en el parametro p*/
 exports.semestre = async (p) =>{
   let r ={}
   r.r = await sem(p)
@@ -28,7 +34,7 @@ exports.semestre = async (p) =>{
 }
 const sem = (p) => {
   return new Promise ((resolve,reject) => {
-    let string = "SELECT * FROM public.semestres AS s WHERE s.pksemestre = $1"
+    let string = "select * from mostrar_semestre($1)"
     let params = [p.pksemestre];//1=processed
     query.query(string,params,function (err, result) {
         if(err)
@@ -43,6 +49,7 @@ const sem = (p) => {
     });
   })
 }
+
 exports.new_semestre = async (p) =>{
   let r = {}
   r.r = await new_comprobar_parametros(p)
@@ -50,7 +57,6 @@ exports.new_semestre = async (p) =>{
   r.r = await new_insertar_semestre(p)
   return r
 }
-
 const new_comprobar_parametros = (p) => {
   return new Promise ((resolve,reject) => {
       let params = [
@@ -99,6 +105,7 @@ const new_insertar_semestre = (p) => {
     });
   })
 }
+
 exports.borrar_semestre = async (p) =>{
   let r = {}
   r.r = await borrar_comprobar_parametros(p)
@@ -106,7 +113,6 @@ exports.borrar_semestre = async (p) =>{
   r.r = await borrar_eliminar_semestre(p)
   return r
 }
-
 const borrar_comprobar_parametros = (p) => {
   return new Promise ((resolve,reject) => {
       let params = [

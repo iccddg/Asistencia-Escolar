@@ -1,4 +1,7 @@
 const query = require('../db_conexion');
+
+/* debuelbe los grupos registrados en la tabla grupos
+con una funcion de tipo SETOF*/
 exports.lis_grupos = async () =>{
   let r = {}
   r.r = await lista()

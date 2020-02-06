@@ -1,6 +1,6 @@
 var express = require('express');
-var multer  = require('multer')
-var upload = multer()
+var multer  = require('multer');
+var upload = multer();
 var router = express.Router();
 var grupos = require('../api/grupos/gest_grupos')
 
@@ -35,27 +35,24 @@ router.post('/gest_grupos',upload.none(), function(req, res, next) {
   })
 });
 //middleware para todas las direcciones con id, actualmente sin uso
-router.param('id', async (req, res,next) => {
+router.param('id', function(req, res, next) {
     console.log('Entrada a la ruta: /gest_grupos/:id.param')
-    try {
-      next()
-    }  catch (err) {
-    // handle errors here
-    }
+    next();
 })
 //rutas para el manejo de semestres individuales
 router.route("/gest_grupos/:id",upload.none())
-  .all(async (req, res,next) => {
+  .all(function(req,res,next){
     console.log('Entrada a la ruta: /gest_grupos/:id.all')
-    try {
-      let p = {pkgrupo:req.params.id};
-      const flags= await Promise.resolve(grupos.grupo(p));
-      res.locals.pkgrupo = flags.r[0].pkgrupo;
-      res.locals.grupo = flags.r[0].grupo;
+    let p = {pkgrupo:req.params.id};
+    grupos.grupo(p).then(
+      resolve => {
+      res.locals.pkgrupo = resolve.r[0].pkgrupo;
+      res.locals.grupo = resolve.r[0].grupo;
       next();
-    }  catch (err) {
-    // handle errors here
-    }
+    }).catch(err => {
+      console.error(err);
+      res.status(500).send(err);
+    })
   })
   .delete(function(req,res,){
     console.log('Entrada a la ruta: /gest_grupos/:id.delete')
