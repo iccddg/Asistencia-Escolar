@@ -1,5 +1,5 @@
 const query = require('../db_conexion');
-//prueba git
+//prueba
 //devuelbe todos los alumnos de la tabla alumnos
 exports.lis_alumnos = async () =>{
   let r = {}
