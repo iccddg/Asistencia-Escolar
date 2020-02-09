@@ -1,5 +1,5 @@
 const query = require('../db_conexion');
-//devuelbe todos los alumnos de la tabla alumnos
+// devuelbe todos los alumnos de la tabla alumnos
 exports.lis_alumnos = async () =>{
   let r = {}
   r.r = await lista()
