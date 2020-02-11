@@ -5,7 +5,15 @@ block content
   p Desde aqui puedes agregar o eliminar carreras a la plataforma
   
   body
-    div
+    section
+      div
+        form(action="/carreras/gest_carreras/cargamasiva" method="post" enctype="multipart/form-data")
+          div
+            input(type="file" name="carreras")
+          div
+            input(type="submit" value="ingreso" class="btn btn-primary")
+            br
+            br
       form(action="/carreras/gest_carreras" method="POST" enctype="multipart/form-data")
         div
           label(for="carrera") carrera nueva:  

@@ -1,7 +1,7 @@
 const pgsql = require("pg");
 
 //quitar comentarios para trabajar en base de datos local
-
+/*
 const pool = new pgsql.Pool({
 user: 'noabandono',
 host: '192.168.1.65',
@@ -9,10 +9,10 @@ database: 'asistenciaescolar',
 password: 'abandonoescolar',
 port: 5432,
 });
-
+*/
 
 //quitar comentarios para trabajar en base de datos remota
-/*
+
 const pool = new pgsql.Pool({
   user: 'noabandono',
   host: 'cbta195.dynu.net',
@@ -20,7 +20,7 @@ const pool = new pgsql.Pool({
   password: 'abandonoescolar',
   port: 5432,
   });
-  */
+  
 
 exports.query = function(sqlstring, sqlvalues, cb){
     try{
