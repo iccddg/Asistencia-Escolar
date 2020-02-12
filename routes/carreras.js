@@ -4,30 +4,11 @@ var upload = multer()
 var router = express.Router();
 var carreras = require('../api/carreras/gest_carreras')
 const fs = require('fs');
-const csv = require('csv-parse')
+const csv = require('csv-parser');
 
 var upload = multer({ dest: 'tempFile/' })
 
-const parseador = csv({
-  delimiter: ',',//Delimitador, por defecto es la coma ,
-  cast: true, // Intentar convertir las cadenas a tipos nativos
-  comment: '#' // El carácter con el que comienzan las líneas de los comentarios, en caso de existir
-});
-
-parseador.on('readable', function () {
-  let fila;
-  while (fila = parseador.read()) {
-      console.log("Tenemos una fila:", fila);
-  }
-});
-
-parseador.on('error', function (err) {
-  console.error("Error al leer CSV:", err.message);
-});
-
-
-
-/* GET users listing. */
+/* GET carreras listing. */
 router.get('/', function(req, res, next) {
   console.log('Entrada a la ruta /.get')
   res.redirect('/carreras/gest_carreras');
@@ -60,19 +41,53 @@ router.post('/gest_carreras',upload.none(), function(req, res, next) {
 //Ruta para carga masiva de carreras
 router.post('/gest_carreras/cargamasiva',upload.single('carreras'), function(req, res, next) {
   console.log('Entrada a la ruta /gest_carreras/cargamasiva.post')
-  var p = {carrera:req.body.carrera};
+  let p = [];
   var archivo = req.file.filename
-  fs.createReadStream('tempFile/'+ archivo) // Abrir archivo
-    .pipe(parseador) // Pasarlo al parseador a través de una tubería
-    .on("end", function () {// Y al finalizar, terminar lo necesario
-        console.log("Se ha terminado de leer el archivo");
-        parseador.end();
-    });
-  carreras.new_carrera(p).then(
-      resolve => {
-        res.status(200);
-        res.redirect('/carreras/gest_carreras')
-  }).catch(err => {
+
+  async function cargamasiva () {
+    let r =  await carga()
+    return r
+  }
+  const carga = () => {
+    return new Promise ((reso,reje) => {
+
+      fs.createReadStream('tempFile/'+ archivo) // Abrir archivo 
+      .pipe(csv()) 
+      .on('data', function(data){ 
+        try {
+          p.push(data); 
+          //perform the operation 
+        } catch(err) { 
+          //error handler 
+        } 
+      }) 
+      .on('end', function(){ 
+        //some final operation
+          console.log(p);
+          p.forEach((val,key,p) => {
+            carreras.new_carrera(val).then(
+            resolve => {
+            console.log(resolve);
+            if(Object.is(p.length - 1, key)){
+              console.log('es el utlimo'+val);
+              reso('todo bien');
+            }
+            }).catch(err => {
+              reje(err);
+            })
+        });
+      });
+
+    })
+  }
+
+  cargamasiva().then(
+    resolve =>{
+      res.status(200);
+      res.redirect('/carreras/gest_carreras')  
+  })
+  .catch(
+    err => {
       console.error(err);
       res.status(500).send(err);
   })
