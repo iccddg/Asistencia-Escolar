@@ -116,7 +116,7 @@ router.get('/gest_carreras/:id/edit', async (req, res,next) => {
   // handle errors here
   }
 });
-//rutas para el manejo de semestres individuales
+//rutas para el manejo de carreras individuales
 router.route("/gest_carreras/:id",upload.none())
   .all(upload.none(),async (req, res,next) => {
     console.log('Entrada a la ruta: /gest_carreras/:id.all')
