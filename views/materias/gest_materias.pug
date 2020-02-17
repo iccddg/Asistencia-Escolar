@@ -5,6 +5,15 @@ block content
   p Desde aqui puedes agregar o eliminar materias a la plataforma
   
   body
+    section
+      div
+        form(action="/materias/gest_materias/cargamasiva" method="post" enctype="multipart/form-data")
+          div
+            input(type="file" name="materias")
+          div
+            input(type="submit" value="ingreso" class="btn btn-primary")
+            br
+            br
     div
       form(action="/materias/gest_materias" method="POST" enctype="multipart/form-data")
         div

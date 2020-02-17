@@ -1,9 +1,13 @@
 var express = require('express');
-var multer  = require('multer')
-var upload = multer()
+var multer  = require('multer');
+var upload = multer();
 var router = express.Router();
-var materias = require('../api/materias/gest_materias')
-var semestres = require('../api/semestres/gest_semestres')
+var materias = require('../api/materias/gest_materias');
+var semestres = require('../api/semestres/gest_semestres');
+const fs = require('fs');
+const csv = require('csv-parser');
+
+var upload = multer({ dest: 'tempFile/' })
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -24,7 +28,7 @@ router.get('/gest_materias', async (req, res, next) => {
       res.status(500).send(err);
     })
 });
-//Ruta para agregar materias nuevo
+//Ruta para agregar materia nueva
 router.post('/gest_materias',upload.none(), function(req, res, next) {
   console.log('Entrada a la ruta /gest_materias.post')
   var p = {materia:req.body.materia,
@@ -37,6 +41,72 @@ router.post('/gest_materias',upload.none(), function(req, res, next) {
       console.error(err);
       res.status(500).send(err);
   })
+});
+//Ruta para carga masiva de materias
+router.post('/gest_materias/cargamasiva',upload.single('materias'), function(req, res, next) {
+  console.log('Entrada a la ruta /gest_materias/cargamasiva.post')
+  let p = [];
+  var archivo = req.file.filename;
+
+  async function cargamasiva () {
+    let r =  await carga()
+    return r
+  }
+  const carga = () => {
+    return new Promise ((reso,reje) => {
+      fs.createReadStream('tempFile/'+ archivo) // Abrir archivo 
+      .pipe(csv()) 
+      .on('data', function(data){ 
+        try {
+          p.push(data); 
+          //perform the operation 
+        } catch(err) { 
+          reje(err);
+          //error handler 
+        } 
+      }) 
+      .on('end', function(){ 
+        //some final operation
+          console.log(p);
+          reso();
+      });
+
+    })
+  }
+  cargamasiva().then(
+    resolve =>{
+      console.log(p);
+      /*
+      p.forEach((val,key,p) => {
+        carreras.new_carrera(val).then(
+        resolve => {
+        console.log(resolve);
+        if(Object.is(p.length - 1, key)){
+          console.log('es el utlimo'+val);
+          reso('todo bien');
+        }
+        }).catch(err => {
+          reje(err);
+        })
+      */
+      res.status(200);
+      res.redirect('/materias/gest_materias')  
+  })
+  .catch(
+    err => {
+      console.error(err);
+      res.status(500).send(err);
+  })
+  /*
+  materias.new_materia(p).then(
+      resolve => {
+        res.status(200);
+        res.redirect('/materias/gest_materias')
+  }).catch(err => {
+      console.error(err);
+      res.status(500).send(err);
+  })
+  */
 });
 //middleware para todas las direcciones con id/edit, actualmente sin uso
 router.param('id*', async (req, res,next) => {
