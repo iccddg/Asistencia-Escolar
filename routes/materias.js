@@ -46,6 +46,7 @@ router.post('/gest_materias',upload.none(), function(req, res, next) {
 router.post('/gest_materias/cargamasiva',upload.single('materias'), function(req, res, next) {
   console.log('Entrada a la ruta /gest_materias/cargamasiva.post')
   let p = [];
+  let valores = [];
   var archivo = req.file.filename;
 
   async function cargamasiva () {
@@ -58,7 +59,8 @@ router.post('/gest_materias/cargamasiva',upload.single('materias'), function(req
       .pipe(csv()) 
       .on('data', function(data){ 
         try {
-          p.push(data); 
+          p.push(data);
+          console.log(p); 
           //perform the operation 
         } catch(err) { 
           reje(err);
@@ -67,48 +69,54 @@ router.post('/gest_materias/cargamasiva',upload.single('materias'), function(req
       }) 
       .on('end', function(){ 
         //some final operation
-          console.log(p);
-          reso();
+        reso();
       });
 
     })
   }
   cargamasiva().then(
-    resolve =>{
-      p.forEach((val,key,p) => {
-        /*carreras.new_carrera(val).then(
-        resolve => {
-        console.log(resolve);
-          console.log('es el utlimo'+val);
-          reso('todo bien');
-        }).catch(err => {
-          reje(err);
-        })
-      */
-        console.log(val);
-        if(Object.is(p.length - 1, key)){
-          console.log('es el utlimo'+val);  
-          res.status(200);
-          res.redirect('/materias/gest_materias')
-        }  
-      })
-    }
-  ).catch(
-      err => {
-      console.error(err);
-      res.status(500).send(err);
-      }
+    () =>{
+      semestres.lis_semestres() //traemos la lista de semestres para recuperar el pk
+          .then(
+            resolve => {
+              console.log(resolve.r);
+              sem = resolve.r;
+              p.forEach((val,key,p) => { //aqui estamos iterando el arreglo con la lista de las materias y su semestre correspondiente
+                console.log(val);
+                sem.forEach((valor,indice,sem) => { // buscamos por semestre y si coincide sustituimos por su pk
+                  if(val.semestre == valor.semestre){
+                    valores.push({materia:val.materia,fksemestre:valor.pksemestre});
+                    console.log(valores);
+                  }
+                })
+                /*materias.new_materias(val).then(
+                  resolve => {
+                  console.log(resolve);
+                }).catch(err => {
+                  console.log(err);
+                })*/
+                if(Object.is(p.length - 1, key)){
+                  console.log('es el utlimo registro');  
+                  res.status(200);
+                  res.redirect('/materias/gest_materias')
+                }  
+              })
+              if(p.length == valores.length){
+
+              }else{
+                PromiseRejectionEvent();
+              };
+            }
+          ).catch(err => {
+              console.error(err);
+              res.status(500).send(err);
+              }
+            )
+            }
     )
-  /*
-  materias.new_materia(p).then(
-      resolve => {
-        res.status(200);
-        res.redirect('/materias/gest_materias')
-  }).catch(err => {
-      console.error(err);
-      res.status(500).send(err);
-  })
-  */
+    .catch(err => {
+      console.log(err);
+    })
 });
 //middleware para todas las direcciones con id/edit, actualmente sin uso
 router.param('id*', async (req, res,next) => {
