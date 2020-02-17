@@ -75,28 +75,30 @@ router.post('/gest_materias/cargamasiva',upload.single('materias'), function(req
   }
   cargamasiva().then(
     resolve =>{
-      console.log(p);
-      /*
       p.forEach((val,key,p) => {
-        carreras.new_carrera(val).then(
+        /*carreras.new_carrera(val).then(
         resolve => {
         console.log(resolve);
-        if(Object.is(p.length - 1, key)){
           console.log('es el utlimo'+val);
           reso('todo bien');
-        }
         }).catch(err => {
           reje(err);
         })
       */
-      res.status(200);
-      res.redirect('/materias/gest_materias')  
-  })
-  .catch(
-    err => {
+        console.log(val);
+        if(Object.is(p.length - 1, key)){
+          console.log('es el utlimo'+val);  
+          res.status(200);
+          res.redirect('/materias/gest_materias')
+        }  
+      })
+    }
+  ).catch(
+      err => {
       console.error(err);
       res.status(500).send(err);
-  })
+      }
+    )
   /*
   materias.new_materia(p).then(
       resolve => {
