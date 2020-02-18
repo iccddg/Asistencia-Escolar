@@ -48,19 +48,14 @@ router.post('/gest_materias/cargamasiva',upload.single('materias'), function(req
   let p = [];
   let valores = [];
   var archivo = req.file.filename;
-
-  async function cargamasiva () {
-    let r =  await carga()
-    return r
-  }
-  const carga = () => {
-    return new Promise ((reso,reje) => {
+  let falla="";
+  // con la funcion carga obtenemos los datos del archivo materias
+  let carga =  new Promise ((reso,reje) => {
       fs.createReadStream('tempFile/'+ archivo) // Abrir archivo 
       .pipe(csv()) 
       .on('data', function(data){ 
         try {
-          p.push(data);
-          console.log(p); 
+          p.push(data); 
           //perform the operation 
         } catch(err) { 
           reje(err);
@@ -69,55 +64,59 @@ router.post('/gest_materias/cargamasiva',upload.single('materias'), function(req
       }) 
       .on('end', function(){ 
         //some final operation
-        reso();
+        reso(p);
       });
-
     })
-  }
-  cargamasiva().then(
-    () =>{
-      semestres.lis_semestres() //traemos la lista de semestres para recuperar el pk
-          .then(
-            resolve => {
-              console.log(resolve.r);
-              sem = resolve.r;
-              p.forEach((val,key,p) => { //aqui estamos iterando el arreglo con la lista de las materias y su semestre correspondiente
-                console.log(val);
-                sem.forEach((valor,indice,sem) => { // buscamos por semestre y si coincide sustituimos por su pk
-                  if(val.semestre == valor.semestre){
-                    valores.push({materia:val.materia,fksemestre:valor.pksemestre});
-                    console.log(valores);
-                  }
-                })
-                /*materias.new_materias(val).then(
-                  resolve => {
-                  console.log(resolve);
-                }).catch(err => {
-                  console.log(err);
-                })*/
-                if(Object.is(p.length - 1, key)){
-                  console.log('es el utlimo registro');  
-                  res.status(200);
-                  res.redirect('/materias/gest_materias')
-                }  
-              })
-              if(p.length == valores.length){
-
-              }else{
-                PromiseRejectionEvent();
-              };
+  //guardamos en sem la lista de semestres con su llave primaria
+  let sem=semestres.lis_semestres();
+  // resolvemos las dos promesas
+  Promise.all([carga,sem])
+    .then(resultados=>{
+      console.log(resultados);
+      let mate=resultados[0];
+      console.log(mate);
+      let seme=resultados[1].r;
+      compara(mate,seme);
+      if(falla !== ""){
+        console.log("se termino");
+      }else{
+       valores.forEach((value,key,valores)=>{
+        materias.new_materia(value).then(
+          resolve => {
+            console.log(resolve);
+            if(Object.is(valores.length - 1, key)){
+              console.log('es el utlimo'+value);
+              res.status(200);
+              res.redirect('/materias/gest_materias')
             }
-          ).catch(err => {
+        }).catch(err => {
+          console.error(err);
+          res.status(500).send(err);
+        })
+       })
+     };
+    })
+    .catch(err => {
               console.error(err);
               res.status(500).send(err);
-              }
-            )
-            }
-    )
-    .catch(err => {
-      console.log(err);
-    })
-});
+    });
+    function compara(mate,seme){
+      mate.forEach((value,key,mate)=>{
+        let pksemestre = seme.findIndex((val,ind,seme)=>{
+          return val.semestre == value.semestre;
+        })
+        if (pksemestre == -1){
+          falla="ocurrio un error en la linea "+(key+2) +" El semestre no existe en la base de datos";
+          console.error(falla);
+          res.status(500).send(falla);
+        }else{
+          valores.push({materia:value.materia,fksemestre:seme[pksemestre].pksemestre});
+        };
+      return;
+      })
+      return;
+    };
+ });
 //middleware para todas las direcciones con id/edit, actualmente sin uso
 router.param('id*', async (req, res,next) => {
     console.log('Entrada a la ruta: /gest_materias/:id.param')

@@ -204,15 +204,15 @@ const borrar_eliminar_materia = (p) => {
     });
   })
 }
-exports.new_materias = async (p) =>{
+exports.carga_masiva_materias = async (p,s) =>{
   let r = {}
-  r.r = await new_materias_comprobar(p)
-  r.r = await new_materias_validar(p)
-  r.r = await new_materias_insertar(p)
+  r.r = await carga_masiva_recuperar_fk_semestres(p,s)
+  r.r = await carga_masiva_comprobar(p)
+  r.r = await carga_masiva_validar(p)
+  r.r = await carga_masiva_insertar(p)
   return r
 }
-
-const new_materias_comprobar = (p) => {
+const carga_masiva_recuperar_fk_semestres = (p,s) => {
   return new Promise ((resolve,reject) => {
       let params = [
           'materia',
@@ -227,7 +227,21 @@ const new_materias_comprobar = (p) => {
       resolve()
   })
 }
-const new_materias_validar = (p) => {
+const carga_masiva_comprobar = (p) => {
+  return new Promise ((resolve,reject) => {
+      let params = [
+          'materia',
+          'fksemestre'
+      ]
+      for(var i = 0;i<params.length;i++){
+          if(p[params[i]] == '' || p[params[i]] == null || p[params[i]] == undefined){
+              reject('Falta el parametro: '+params[i]);
+          }
+      }
+      resolve()
+  })
+}
+const carga_masiva_validar = (p) => {
   return new Promise ((resolve,reject) => {
     let string = "SELECT * FROM public.materias AS s WHERE s.materia = $1"
     let params = [p.materia];//1=processed
@@ -244,7 +258,7 @@ const new_materias_validar = (p) => {
     });
   })
 }
-const new_materias_insertar = (p) => {
+const carga_masiva_insertar = (p) => {
   return new Promise ((resolve,reject) => {
     let string ='INSERT INTO public.materias (materia,fksemestre) VALUES ($1,$2)'
     let params = [p.materia,p.fksemestre];//1=processed
